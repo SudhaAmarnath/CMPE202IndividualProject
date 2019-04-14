@@ -79,6 +79,11 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
         this.state.invalidPin() ;
     }
 
+    /** Get boolean value of authentication */
+    public boolean isAuthenticated() {    	
+    	return this.authenticated;    	
+    }
+    
     /** Change the State to No Pin State */
     public void setStateNoPinDigits()
     {
@@ -93,7 +98,7 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
 
     /**
      * Change the State to One Pin State
-     * @param digit Digit/Number Enterred
+     * @param digit Digit/Number Entered
      */
     public void setStateOnePinDigit( String digit )
     {
@@ -111,7 +116,7 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
 
     /**
      * Change the State to Two Pin State
-     * @param digit Digit/Number Enterred
+     * @param digit Digit/Number Entered
      */
     public void setStateTwoPinDigits( String digit )
     {
@@ -128,7 +133,7 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
 
     /**
      * Change the State to Three Pin State
-     * @param digit Digit/Number Enterred
+     * @param digit Digit/Number Entered
      */
     public void setStateThreePinDigits( String digit )
     {
@@ -144,7 +149,7 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
 
     /**
      * Change the State to Four Pin State
-     * @param digit Digit/Number Enterred
+     * @param digit Digit/Number Entered
      */
     public void setStateFourPinDigits( String digit )
     {
@@ -164,6 +169,7 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
             else
             {
                 System.err.println( "Login Failed!" ) ;
+                this.authenticated = false;
                 setStateNoPinDigits() ;
             }
         }
@@ -172,7 +178,7 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
     /**
      * Observer of Key Events
      * @param c   Num Keys So Far
-     * @param key Last Key Enterred
+     * @param key Last Key Entered
      */
     public void keyEventUpdate( int c, String key ) 
     {

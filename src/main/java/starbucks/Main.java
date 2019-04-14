@@ -38,6 +38,7 @@ final class Main {
                    
             /* process commands */
             msg = cmd ;
+                        
             if ( cmd.startsWith("touch") ) {
                 String parms = cmd.replaceFirst("touch", "") ;
                 parms = parms.substring(1) ;
@@ -52,18 +53,23 @@ final class Main {
                 String selection = cmd.toUpperCase() ;
                 msg = "selected: " + selection ;
                 app.execute( selection ) ;
+            } 
 
-            } else if ( cmd.startsWith("prev") ) {
+            if ( cmd.startsWith("prev") ) {
                 msg = "cmd: previous" ;
                 app.prev() ;
             } else if ( cmd.startsWith("next") ) {
                 msg = "cmd: next" ;
                 app.next() ;
-            } else if (cmd.equalsIgnoreCase( "portrait" )) {
+            } 
+
+            if (cmd.equalsIgnoreCase( "portrait" )) {
                 app.portrait() ;
             } else if (cmd.equalsIgnoreCase( "landscape" )) {
                 app.landscape() ;
-            } else if ( cmd.startsWith("login") ) {
+            } 
+
+            if ( cmd.startsWith("login") ) {
                 app.touch(1,5) ;  // 1
                 app.touch(2,5) ;  // 2
                 app.touch(3,5) ;  // 3
@@ -71,6 +77,7 @@ final class Main {
             } else {
                 msg = "" ;  
             }
+            
         }
     }
     

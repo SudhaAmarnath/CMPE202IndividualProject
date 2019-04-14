@@ -79,7 +79,10 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
         this.state.invalidPin() ;
     }
 
-    /** Get boolean value of authentication */
+    /**
+     * Get boolean value of authentication
+     * @return boolean
+     */
     public boolean isAuthenticated() {    	
     	return this.authenticated;    	
     }

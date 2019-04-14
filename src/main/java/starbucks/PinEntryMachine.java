@@ -33,6 +33,7 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
 
     // pin captured so far
     private String d1, d2, d3, d4 ;
+
     public String d1() { return d1 ; }
     public String d2() { return d2 ; }
     public String d3() { return d3 ; }
@@ -44,6 +45,7 @@ public class PinEntryMachine implements IPinStateMachine, IKeyPadObserver, IPinA
      */
     public PinEntryMachine( )
     {
+    	System.out.println(pinCount);
         pin0 = new NoPinDigits( this ) ;
         pin1 = new OnePinDigit( this ) ;
         pin2 = new TwoPinDigits( this ) ;

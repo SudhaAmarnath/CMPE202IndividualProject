@@ -22,31 +22,34 @@ public class KeyPad implements ITouchEventHandler, IDisplayComponent, IKeyPadSub
      * @param x X Coord
      * @param y Y Coord
      */
-    public void touch(int x, int y) { 
-        if ( y > 4 )
-        {
+    public void touch(int x, int y) {
+
+        if (Utils.ifXInRange(x) && Utils.ifYInRange(y)) {
             System.err.println( "KeyPad Touched at (" + x + ", " + y + ")" ) ; 
             this.lastKey = getKey( x, y ) ;
-            if ( x==3 && y==8   )
-            {
+            if (x==3 && y==8 && countPinDigits!=0) {
                 countPinDigits-- ;
-            }
-            else if ( y < 8 || (x==2 && y==8))
-            {
+                System.err.println(countPinDigits);
+            } else if (y < 8 || (x==2 && y==8)) {
                 countPinDigits++ ;
+                System.err.println("num:" + countPinDigits);
             }
             notifyObservers() ;            
-        }
-        else
-        {
+        } else {
+            countPinDigits=0;
             if ( nextHandler != null )
                 nextHandler.touch(x,y) ;
         }
+        
+        if(countPinDigits > 9) {
+            countPinDigits = 1;
+        }
+        
     }
 
     /**
      *  Get Last Key Pressed 
-     * @return Lasy Key
+     * @return Last Key
      */
     public String lastKey() { 
         System.err.println( "Key Pressed: " + this.lastKey ) ;
@@ -61,17 +64,22 @@ public class KeyPad implements ITouchEventHandler, IDisplayComponent, IKeyPadSub
      */
     private String getKey( int x, int y )
     {
-        int kx = 0, ky = 0 ;
-        kx = x;
-        ky = y-4 ;
-        if ( kx==3 && ky ==4 )
-            return "X" ;
-        else if ( kx==2 && ky == 4 )
-            return "0" ;
-        else if ( kx==1 && ky ==4 )
-            return " " ;
-        else
-            return Integer.toString(kx+3*(ky-1)) ;   
+        int kx = x;
+        int ky = y-4 ;
+        
+        if (ky == 4) {        	
+        	switch(kx) {
+        		case 1 : 
+        			return " ";
+        		case 2 :
+        			return "0";
+        		case 3 :
+        			return "X";
+        	}
+        }  
+        
+        return Integer.toString(kx+3*(ky-1)) ;
+
     }
 
     /*
@@ -110,7 +118,7 @@ public class KeyPad implements ITouchEventHandler, IDisplayComponent, IKeyPadSub
         String output =  " [1] [2] [3]\n" ;
                output += " [4] [5] [6]\n" ;
                output += " [7] [8] [9]\n" ;
-               output += " [_] [0] [x]" ;
+               output += " [_] [0] [X]" ;
 
         return output ;
     }

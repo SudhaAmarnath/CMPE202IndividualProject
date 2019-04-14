@@ -1,15 +1,45 @@
 
-
 package starbucks;
 
 /** Settings Screen */
-public class Settings extends Screen
-{
-   
-    public Settings()
-    {
-       
-    }
+public class Settings extends Screen {
+	private String dispsettings = "";
 
-   
+	/**
+	 * Constructor
+	 */
+	public Settings() {
+
+	}
+
+	/**
+	 * To display the setting contents
+	 * 
+	 * @return settings content
+	 */
+	public String display() {
+
+		dispsettings =  "Billing\n";
+		dispsettings += "Passcode\n";
+		dispsettings += "Add Card\n";
+		dispsettings += "Delete Card\n";
+		dispsettings += "Terms and Conditions\n";
+		dispsettings += "Help";
+
+		return dispsettings;
+
+	}
+
+	/**
+	 * To handle touch events
+	 * 
+	 * @param x Touch X Coord.
+	 * @param y Touch Y Coord.
+	 */
+	@Override
+	public void touch(int x, int y) {
+		// do nothing
+
+	}
+
 }

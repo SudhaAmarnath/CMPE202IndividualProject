@@ -48,10 +48,7 @@ final class Main {
                 String y = values[1] ;
                 msg = "touch: x="+x + " y="+y ; 
                 app.touch( Integer.parseInt(x), Integer.parseInt(y) ) ;
-            } else if ( cmd.equals("a") || cmd.equals("b") 
-                        || cmd.equals("c") || cmd.equals("d")
-                        || cmd.equals("e")
-                ) {
+            } else if (cmd.matches("[a-e]{1}")) {
                 String selection = cmd.toUpperCase() ;
                 msg = "selected: " + selection ;
                 app.execute( selection ) ;
@@ -76,5 +73,7 @@ final class Main {
             }
         }
     }
+    
+    
 }
 

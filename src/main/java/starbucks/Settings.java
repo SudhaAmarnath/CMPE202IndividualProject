@@ -19,10 +19,10 @@ public class Settings extends Screen {
 	 */
 	public String display() {
 
-		dispsettings =  "Billing\n";
-		dispsettings += "Passcode\n";
-		dispsettings += "Add Card\n";
+		dispsettings  = "Add Card\n";
 		dispsettings += "Delete Card\n";
+		dispsettings += "Billing\n";
+		dispsettings += "Passcode\n";
 		dispsettings += "Terms and Conditions\n";
 		dispsettings += "Help";
 

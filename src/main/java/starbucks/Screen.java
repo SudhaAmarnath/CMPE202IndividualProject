@@ -14,11 +14,13 @@ import java.util.* ;
  */
 public class Screen implements IScreen, IDisplayComponent
 {
+
     /** Display Components */
     private ArrayList<IDisplayComponent> components = new ArrayList<IDisplayComponent>() ;
 
     /** Front of Event Chain */
     private ITouchEventHandler chain ;
+    private IFrame fnm;
 
     /** Constructor */
     public Screen()
@@ -32,6 +34,7 @@ public class Screen implements IScreen, IDisplayComponent
      */
     public void touch(int x, int y) {
         chain.touch(x, y) ;
+
     }
     
     /** Next Screen - Not Used */
@@ -50,7 +53,11 @@ public class Screen implements IScreen, IDisplayComponent
      * @param n Next Screen Label
      */
     public void setNext(IScreen s, String n )  {
-        // add code here
+        fnm = getFrame();
+        fnm.setCurrentScreen(s);
+        fnm.cmd(n);
+
+
     }
     
     /**
@@ -59,7 +66,8 @@ public class Screen implements IScreen, IDisplayComponent
      * @param n Previous Screen Label
      */
     public void setPrev(IScreen s, String n )  {
-        // add code here
+            fnm = getFrame();
+            fnm.setCurrentScreen(s);
     }    
 
     /**
@@ -85,13 +93,15 @@ public class Screen implements IScreen, IDisplayComponent
      * @return Display Contents
      */
     public String display() { 
-        String value = "" ;
+        String value;
+        StringBuffer buf = new StringBuffer();
         for (IDisplayComponent c : components )
         {
             System.err.println( "Screen: " + c.getClass().getName() ) ;
-            value = value + c.display() + "\n" ;
+            buf = buf.append(c.display() + "\n") ;
         }
-        return value ; 
+        value = buf.toString();
+        return  value;
     }
 
     /**
@@ -102,4 +112,12 @@ public class Screen implements IScreen, IDisplayComponent
         return (this.getClass().getName()).split("\\.")[1] ; 
     }
 
+    public void setFrame(IFrame f){
+
+        fnm=f;
+    }
+
+    public IFrame getFrame(){
+        return fnm;
+    }
 }

@@ -31,12 +31,19 @@ public class Frame implements IFrame
 
     /** Nav to Previous Screen */
     public void previousScreen() {
-        // add code here
+    	
+        current.setFrame(this);
+        current.prev();
+
     }
 
     /** Nav to Next Screen */
     public void nextScreen() {
-        // add code here
+    	
+        current.setFrame(this);
+        current.next();
+
+
     }
 
 
@@ -85,11 +92,12 @@ public class Frame implements IFrame
      * @return     Padded Lines
      */
     private String padLines(int num) {
-        String lines = "" ;
+        StringBuffer buf = new StringBuffer();
         for ( int i = 0; i<num; i++ ) {
             System.err.print(".") ;
-            lines += "\n" ;
+            buf.append("\n");
         }
+        String lines = buf.toString();
         System.err.println("") ;
         return lines ;
     }
@@ -100,9 +108,11 @@ public class Frame implements IFrame
      * @return     Padded Line
      */
     private String padSpaces(int num) {
-        String spaces = "" ;
-        for ( int i = 0; i<num; i++ )
-            spaces += " " ;           
+        StringBuffer buf = new StringBuffer();
+        for ( int i = 0; i<num; i++ ) {
+        	buf.append(" ");
+        }
+        String spaces = buf.toString();
         return spaces ;     
     }            
 
@@ -111,72 +121,16 @@ public class Frame implements IFrame
     {
         current = initial ;
 
-        portraitStrategy = new IOrientationStrategy() 
-        {
-            /**
-             * Display Screen Contents
-             * @param s Reference to Screen
-             */
-            public void display(IScreen s)
-            {
-                System.out.println( contents(s) ) ;
-            }         
+        portraitFrame();
 
-                /**
-             * Return String / Lines for Frame and Screen
-             * @param  s [description]
-             * @return   [description]
-             */
-            public String contents(IScreen s) 
-            { 
-                String out = "" ;
-                out += "===============\n" ;
-                int nameLen = s.name().length() ;
-                if (nameLen < 14 ) {
-                    int pad = (14 - nameLen) / 2 ;
-                    out += padSpaces( pad ) ;
-                }
-                out += s.name() + "\n" ;
-                out += "===============\n" ;
-                String screen = s.display() + "\n" ;
-                int cnt1 = countLines( screen ) ;
-                int pad1 = (10 - cnt1) / 2;
-                //System.err.println( "cnt1: " + cnt1 ) ;                
-                //System.err.println( "pad1: " + pad1 ) ;
-                out += padLines( pad1 ) ;
-                out += screen  ;
-                //dumpLines( out ) ;                
-                int cnt2 = countLines( out ) ;
-                int pad2 = 13 - cnt2 ;
-                //System.err.println( "cnt2: " + cnt2 ) ;                
-                //System.err.println( "pad2: " + pad2 ) ;
-                //dumpLines( out ) ;
-                String padlines = padLines( pad2 ) ;
-                out += padlines ;
-                out +=  "===============\n" ;
-                out +=  "[A][B][C][D][E]\n" ;
-                dumpLines( out ) ;
-                return out ;             
-            }
+        landscapeFrame();     
 
-            /** Select Command A */
-            public void selectA() { menuA.invoke() ; }
+        /* set default layout strategy */
+        currentStrategy = portraitStrategy ;
+    }
 
-            /** Select Command B */
-            public void selectB() { menuB.invoke() ; }
-
-            /** Select Command C */
-            public void selectC() { menuC.invoke() ; }
-
-            /** Select Command D */
-            public void selectD() { menuD.invoke() ; }
-
-            /** Select Command E */
-            public void selectE() { /** todo **/ }
-
-        } ;
-
-        landscapeStrategy = new IOrientationStrategy() 
+	private void landscapeFrame() {
+		landscapeStrategy = new IOrientationStrategy() 
         {
             /**
              * Display Screen Contents
@@ -219,11 +173,69 @@ public class Frame implements IFrame
             /** Don't Respond in Landscaope Mode */
             public void selectE() {  }
 
-       } ;     
+       } ;
+	}
 
-        /* set default layout strategy */
-        currentStrategy = portraitStrategy ;
-    }
+	private void portraitFrame() {
+		portraitStrategy = new IOrientationStrategy() 
+        {
+            /**
+             * Display Screen Contents
+             * @param s Reference to Screen
+             */
+            public void display(IScreen s)
+            {
+                System.out.println( contents(s) ) ;
+            }         
+
+                /**
+             * Return String / Lines for Frame and Screen
+             * @param  s [description]
+             * @return   [description]
+             */
+            public String contents(IScreen s) 
+            { 
+                String out = "" ;
+                out += "===============\n" ;
+                int nameLen = s.name().length() ;
+                if (nameLen < 14 ) {
+                    int pad = (14 - nameLen) / 2 ;
+                    out += padSpaces( pad ) ;
+                }
+                out += s.name() + "\n" ;
+                out += "===============\n" ;
+                String screen = s.display() + "\n" ;
+                int cnt1 = countLines( screen ) ;
+                int pad1 = (10 - cnt1) / 2;
+                out += padLines( pad1 ) ;
+                out += screen  ;               
+                int cnt2 = countLines( out ) ;
+                int pad2 = 13 - cnt2 ;
+                String padlines = padLines( pad2 ) ;
+                out += padlines ;
+                out +=  "===============\n" ;
+                out +=  "[A][B][C][D][E]\n" ;
+                dumpLines( out ) ;
+                return out ;             
+            }
+
+            /** Select Command A */
+            public void selectA() { menuA.invoke() ; }
+
+            /** Select Command B */
+            public void selectB() { menuB.invoke() ; }
+
+            /** Select Command C */
+            public void selectC() { menuC.invoke() ; }
+
+            /** Select Command D */
+            public void selectD() { menuD.invoke() ; }
+
+            /** Select Command E */
+            public void selectE() { menuE.invoke();  }
+
+        } ;
+	}
 
     /**
      * Change the Current Screen
@@ -255,9 +267,10 @@ public class Frame implements IFrame
      */
     public void touch(int x, int y)
     {
-        if ( current != null )
-            current.touch(x,y) ;
-
+        if ( current != null ) {
+            current.setFrame(this);
+            current.touch(x, y);
+        }
     }
 
     /**
@@ -311,6 +324,8 @@ public class Frame implements IFrame
     public void selectD() { currentStrategy.selectD() ;  }
 
     /** Select Command E */
-    public void selectE() { /* todo */  }    
+    public void selectE() { currentStrategy.selectE();   }
+
+
 
 }

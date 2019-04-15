@@ -49,4 +49,11 @@ public interface IScreen
      */
     void setPrev(IScreen s, String n ) ;    
 
+    /**
+     * Set IFrame f
+     * @param  f [description]
+     */
+    void setFrame(IFrame f);
+    
+
 }
